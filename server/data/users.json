@@ -2,5 +2,33 @@
   {
     "email": "therese.alstig@gmail.com",
     "password": "$2b$10$FurG7ARcsa.F9aa7DlhiWOAF26rUCze6dn/XcIX5gQAmrjSKNAsLG"
+  },
+  {
+    "email": "fakeuser@gmail.com",
+    "password": "$2b$10$GKCCP/olEWg2EvKi2MqnvupcfGuQfkN1gOY9vAz7oDYUsRnc896T."
+  },
+  {
+    "email": "fake@gmail.com",
+    "password": "$2b$10$yKO10w6mj5n3D9sMEAm02e1ZcmZLZAZrefBFlErEa03Qroc0n3cm."
+  },
+  {
+    "email": "the.alstig@gmail.com",
+    "password": "$2b$10$ytzFe1l5pHA3Y8Inz6/T5O3JIRCou0g5ExDIsNPrS6MC0G9l4m6Zi"
+  },
+  {
+    "email": "t.alstig@gmail.com",
+    "password": "$2b$10$fYy/k780R0FXI6MHHnwO7uHmg.6gdPRz6HEix9ayezdo4zmB9Z/dW"
+  },
+  {
+    "email": "fake@gil.com",
+    "password": "$2b$10$YXviObH7mXZnVf3/CqipIufyZgqlx6qOVHV73KELR34DjxYuBwiVS"
+  },
+  {
+    "email": "tkjkj.alstig@gmail.com",
+    "password": "$2b$10$5w9H4a2SJggUXbekmbe8dezQ2I1fxvjJfVBbjtT5hLbb6glsiWtAW"
+  },
+  {
+    "email": "jkh@lkjlesfkjsl",
+    "password": "$2b$10$FKMg1dYyVij87FSw8AYwP.UBOeo/v9Q5AVfivVn/qeBrmycRL/u.G"
   }
 ]
