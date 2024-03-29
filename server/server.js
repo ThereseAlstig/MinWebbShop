@@ -1,13 +1,17 @@
 const express = require('express');
 const cookieSession = require("cookie-session")
-//
+const cors = require("cors")
 
 
 const authRouter=require("./resorces/auth/auth.router")
 const usersRouter = require("./resorces/users/users.rauter");
 
 const app = express();
-
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true  
+}));
+  
 app.use(express.json());
 app.use(cookieSession({
 secret: "sdr456",
