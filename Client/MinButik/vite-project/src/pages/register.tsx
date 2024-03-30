@@ -40,15 +40,12 @@ export const Register =()=>{
 }
 
     return(
-
         <>
         <h2>Register:</h2>
         <form onSubmit={handleSubmit}>
         <input type="email" value ={email}onChange={handleEmailChange}/>
-        <input type="passwaord"value={password}onChange={handlePasswordChange}/>
+        <input type="password"value={password}onChange={handlePasswordChange} id="password" name="password"/>
     <button type="submit">Register sig nu</button>
     </form>
-        
         </>
-    )
-}
+    )}
