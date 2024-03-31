@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const Login =()=>{
-    const [user, setUser]= useState("");
+    const [users, setUsers]= useState("");
     const [email, setEmail]= useState("");
     const [password, setPassword]= useState("");
     
@@ -20,6 +20,7 @@ export const Login =()=>{
 
  const response = await fetch("http://localhost:3001/api/auth/login",
 {
+    
     method: "POST",
     headers:{
         "Content-Type": "application/json"
@@ -29,12 +30,12 @@ export const Login =()=>{
 })
  const data = await response.json()
  console.log(data)
- console.log(user)
+ console.log(users)
 
  if(response.status=== 200){
-    setUser(data)
+    setUsers(data)
  }else{
-    setUser("")
+    setUsers("")
  }
 
 }
