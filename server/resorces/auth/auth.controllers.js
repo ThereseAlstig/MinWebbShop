@@ -59,7 +59,7 @@ const authorize = (req, res)=>{
     if(!req.session.user){
         return res.status(401).json("You are not logged in")
     }
-res.status(201).json(req.session.user.email, "is logged in")
+res.status(200).json(req.session.user)
 
 }
 module.exports = {register, login, logout, authorize}

@@ -9,6 +9,7 @@ import { Register } from "../pages/register";
 
 
 
+
 const Router = createBrowserRouter([
 {
     path: "/",
@@ -19,6 +20,11 @@ const Router = createBrowserRouter([
 
  element: <Contacts/>,
     path:  "/Contacts",   
+},
+{
+
+ element: <Home/>,
+    path:  "/Home",   
 },
 {
 
