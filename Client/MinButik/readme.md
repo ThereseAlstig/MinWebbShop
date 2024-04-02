@@ -9,8 +9,7 @@ npm install axios, react-router-dom
 
 I mapp -crs-pages
 Hittar vi sidor för
-Inloggning
-Registering 
+
 Huvudsidan
 Samt Sin beställning/kundkorg
 
@@ -21,6 +20,7 @@ server inloggning
 Skapa en servermapp npm initi --y
 
 npm install npm install express cors cookie-session npm init bcrypt
+npm install stripe
 
 Mappar:
 data- med filer med data -användare med lösenord

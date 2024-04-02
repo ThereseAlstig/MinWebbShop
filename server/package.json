@@ -5,7 +5,8 @@
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "stripe": "^14.23.0"
   },
   "scripts": {
     "start": "node server.js"

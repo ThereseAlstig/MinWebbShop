@@ -4,8 +4,9 @@ import { NotFound } from "../pages/notFound";
 import { Home } from "../pages/home";
 import { MyOrder } from "../pages/myOrder";
 import { Contacts } from "../pages/contsact";
-import { Login } from "../pages/loginPage";
-import { Register } from "../pages/register";
+import { ConfirmOrder } from "../pages/confirmOrder";
+
+
 
 
 
@@ -22,21 +23,19 @@ const Router = createBrowserRouter([
 },
 {
 
+ element: <Home/>,
+    path:  "/Home",   
+},
+{
+
  element: <MyOrder/>,
     path:  "/MyOrder",   
 },
 {
 
- element: <Login/>,
-    path:  "/Login",   
-}
-,
-{
-
- element: <Register/>,
-    path:  "/Register",   
-}
-
+ element: <ConfirmOrder/>,
+    path:  "/ConfirmOrder",   
+},
 ]
 },
 ]);
