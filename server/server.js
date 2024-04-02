@@ -6,7 +6,7 @@ require("dotenv").config()
 
 const authRouter=require("./resorces/auth/auth.router")
 const usersRouter = require("./resorces/users/users.rauter");
-const stripeRouter = require("./resorces/stripe/stripe.router")
+const stripeRouter = require("./stripe/stripe.router")
 const app = express();
 
 app.use(cors({
