@@ -1,0 +1,30 @@
+
+
+.Cart{
+background-color: aliceblue;
+color: black;
+width: 35%;
+margin-left: 150px;
+border-radius: 25px;
+
+}
+.MainHome{
+color:black;
+background-color: aliceblue;
+width: 35%;
+border-radius: 25px;
+}
+
+.MainOCart{
+
+    color: black;
+    display: flex;
+   flex-wrap: nowrap;
+   padding: 5px;
+   margin: 5px;
+   text-align: center;
+   li{
+    list-style: none;
+   }
+
+}

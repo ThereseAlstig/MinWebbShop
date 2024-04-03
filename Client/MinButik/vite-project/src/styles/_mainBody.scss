@@ -1,0 +1,42 @@
+body{
+    width: 100%;
+ 
+    margin: 0px;
+    margin-top: 0px;
+}
+
+.MainDiv{
+    background-color: black;
+    color: white;
+    width: 100%;
+   display: grid;
+   grid-template-columns: repeat (12, 1fr);
+   grid-gap: 5px;
+
+   h1{
+    grid-column: 1/12;
+    grid-row: 1/2;
+    text-align: center;
+    height: 150px;
+    margin-top: 55px;
+    font-size: 130px;
+   
+
+   }
+   header{
+    grid-column: 1/2;
+    grid-row: 2/5;
+   }
+
+  
+   main{
+    grid-column:2/12;
+    grid-row:3/5;
+   }
+   
+   footer{
+    grid-column:1/12;
+    grid-row:5/6;
+   }
+
+}
