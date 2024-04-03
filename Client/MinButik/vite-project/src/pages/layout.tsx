@@ -13,8 +13,8 @@ export const Layout =()=>{
     
 
     return(
-        <>
-        
+        <div className="MainDiv">
+        <h1>MC för alla</h1>
         <header>
             <Navigation/>
         </header>
@@ -24,6 +24,6 @@ export const Layout =()=>{
         <footer>
             <Footer/>
         </footer>
-        </>
+        </div>
     )
 }

@@ -19,4 +19,23 @@ const createChecoutSession =async(req, res)=>{
    res.status(200).json({url: session.url, sessionId: session.id})
 }
 
-module.exports= {createChecoutSession}
+const getProducts = async(req, res)=>{
+   const stripe = initStripe()
+const products = await stripe.products.list({
+  limit: 4,
+
+})
+res.status(200).json({products})
+}
+
+const getPrice = async(req, res)=>{
+   const stripe = initStripe()
+const price = await stripe.prices.list({
+  limit: 4,
+
+})
+res.status(200).json({price})
+}
+
+
+module.exports= {createChecoutSession, getProducts, getPrice}

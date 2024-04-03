@@ -1,16 +1,63 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { LoggInLoggUt } from "./loginLogut"
+import { Porducts } from "../class/products"
+import { Price } from "../class/price"
 
 export const Home =()=>{
 
     const [user, setUser]=useState("")
+    const[products, setProducts]=useState<Porducts[]>([])
+    const[cartItem, setCartItem]= useState<Porducts[]>([])
+    const[price, setPrice]= useState<Price[]>([])
+    
     const updateUser = (newUser: string)=>{
         setUser(newUser)
     }
+    useEffect(() => {
+        const fetchProducts = async () => {
+          try {
+            const response = await fetch("http://localhost:3001/payments/products");
+            if (!response.ok) {
+              throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            
+            setProducts(data.products.data);
+            console.log(data.products.data)
+            
+            console.log(products)
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+        };
+    
+        fetchProducts();
+      }, []);
+
+
+    useEffect(() => {
+        const fetchPrice = async () => {
+          try {
+            const response = await fetch("http://localhost:3001/payments/price");
+            if (!response.ok) {
+              throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            
+            setPrice(data);
+            console.log(data)
+            console.log(price)
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+        };
+    
+        fetchPrice();
+      }, []);
+
 const HandlePayment=async()=>{
 
     const response= await fetch("http://localhost:3001/payments/create-checkout-session",{
-        
     method: "POST"
 
 })
@@ -18,13 +65,64 @@ const data = await response.json()
 window.location=data.url
     console.log(data)
 }
+const addToCart =(product:Porducts)=>{
+console.log(product)
+
+setCartItem(
+   [...cartItem, product] )
+   console.log(cartItem)
+
+}
+const removeFromCart =(productId: string) => {
+    setCartItem(cartItem.filter((item) => item.id !== productId));
+  };
+
 
     return (
-        <>
+        <div className="HomePage">
         <LoggInLoggUt updateUser={updateUser}/>
-        <h2>Home</h2>
-        <p>Produkter</p>
-        <button onClick={HandlePayment}>Genomför köp</button>
-        </>
+        
+            <div className="MainOCart">
+                <div className="MainHome">
+        <h2>Motorcyklar:</h2>
+
+        <ul>
+
+        {products && products.map(product=>(
+            <li key={product.id}>
+                <h3>{product.name}</h3>
+                <img src={product.images} height="150px" alt={product.name} />    
+                <p>{product.default_price}</p>
+                <p>{product.description}</p>
+                <button onClick={()=> addToCart(product)}>Lägg i kundvagn</button>
+            </li>
+        ))}</ul>
+        </div>
+        
+<div className="Cart">
+   <h3>Kundkorg</h3>
+    <ul>{cartItem && cartItem.length > 0 && (
+  <h2>Din beställning:</h2>
+)}
+{!cartItem || cartItem.length === 0 && (
+  <h2>Din Kundkorg är tom</h2>
+)}
+        {cartItem &&  cartItem.map(product=>(
+            
+            <li key={product.id}>
+                <h3>{product.name}</h3>
+       
+                <img src={product.images} height="150px"alt={product.name} />
+               
+                <p>{product.default_price}</p>
+                <p>{product.description}</p>
+                <button onClick={()=> removeFromCart(product.id)}>Ta bort</button>
+                </li>)
+               )}
+ </ul>
+            <button onClick={HandlePayment}>Genomför köp</button>
+           </div> </div>
+        </div>
+    
     )
 }

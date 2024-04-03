@@ -5,7 +5,8 @@ MinButik
 vite-project
 npm create vite npm cd webbShopSida npm run dev
 
-npm install axios, react-router-dom
+Att installera:
+npm install axios, react-router-dom, sass
 
 I mapp -crs-pages
 Hittar vi sidor för

@@ -138,7 +138,7 @@ setError("Ettoväntat fel inträffade")
 
 
 return(
-    <>
+    <div className="LogIn">
 
 {!user ? (<><h2>Logga in</h2>
 <form onSubmit={handleSubmit}>
@@ -151,7 +151,7 @@ return(
 <button onClick={Logout}>Logga ut</button>
     <h1>Du är inloggad</h1>
     </>)}
-</>
+</div>
 )
 
 }
