@@ -10,6 +10,7 @@ export const Home =()=>{
     const[cartItem, setCartItem]= useState<Porducts[]>([])
     const[price, setPrice]= useState<Price[]>([])
     
+    
     const updateUser = (newUser: string)=>{
         setUser(newUser)
     }
@@ -57,9 +58,18 @@ export const Home =()=>{
 
 const HandlePayment=async()=>{
 
+  const requestBody = cartItem.map(item => ({
+    product: item.default_price,
+    quantity: item.quantity 
+}));
+console.log(requestBody)
     const response= await fetch("http://localhost:3001/payments/create-checkout-session",{
-    method: "POST"
-
+    method: "POST",
+    headers:{
+      "Content-Type": "application/json"
+    },
+body: JSON.stringify(requestBody
+)
 })
 const data = await response.json()
 window.location=data.url
@@ -77,7 +87,15 @@ const removeFromCart =(productId: string) => {
     setCartItem(cartItem.filter((item) => item.id !== productId));
   };
 
-
+  const handleQuantityChange = (productId: string, newQuantity: string) => {
+    setCartItem(prevCartItems => prevCartItems.map(item => {
+        if (item.id === productId) {
+       
+            return { ...item, quantity: parseInt(newQuantity) }; // Uppdatera kvantiteten för den aktuella produkten
+        }
+        return item;
+    }));
+};
     return (
         <div className="HomePage">
         <LoggInLoggUt updateUser={updateUser}/>
@@ -116,12 +134,19 @@ const removeFromCart =(productId: string) => {
                
                 <p>{product.default_price}</p>
                 <p>{product.description}</p>
+                <input 
+            type="number" 
+            min="1" 
+            defaultValue={1}
+            value={product.quantity} // Använd produktens kvantitet som input-värde
+            onChange={(event) => handleQuantityChange(product.id, event.target.value)} // Uppdatera kvantiteten när användaren ändrar input-värdet
+        />
                 <button onClick={()=> removeFromCart(product.id)}>Ta bort</button>
                 </li>)
                )}
  </ul>
-            <button onClick={HandlePayment}>Genomför köp</button>
-           </div> </div>
+             <button onClick={HandlePayment}>Genomför köp</button>
+           </div></div>
         </div>
     
     )

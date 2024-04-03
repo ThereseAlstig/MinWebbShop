@@ -149,7 +149,7 @@ return(
 </form>
 {error && <p>{error}</p>}</>):(<>
 <button onClick={Logout}>Logga ut</button>
-    <h1>Du är inloggad</h1>
+    <h2>Du är inloggad</h2>
     </>)}
 </div>
 )
