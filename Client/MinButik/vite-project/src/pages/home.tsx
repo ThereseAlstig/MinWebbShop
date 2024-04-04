@@ -13,6 +13,7 @@ export const Home =()=>{
     
     const updateUser = (newUser: string)=>{
         setUser(newUser)
+        console.log(user)
     }
     useEffect(() => {
         const fetchProducts = async () => {
@@ -22,10 +23,8 @@ export const Home =()=>{
               throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            
             setProducts(data.products.data);
             console.log(data.products.data)
-            
             console.log(products)
           } catch (error) {
             console.error('Error fetching products:', error);
@@ -59,6 +58,7 @@ export const Home =()=>{
 const HandlePayment=async()=>{
 
   const requestBody = cartItem.map(item => ({
+   user: user,
     product: item.default_price,
     quantity: item.quantity 
 }));
@@ -68,10 +68,10 @@ console.log(requestBody)
     headers:{
       "Content-Type": "application/json"
     },
-body: JSON.stringify(requestBody
-)
+body: JSON.stringify(requestBody)
 })
 const data = await response.json()
+localStorage.setItem("sessionId",JSON.stringify(data.sessionId))
 window.location=data.url
     console.log(data)
 }
@@ -96,6 +96,8 @@ const removeFromCart =(productId: string) => {
         return item;
     }));
 };
+
+
     return (
         <div className="HomePage">
         <LoggInLoggUt updateUser={updateUser}/>
@@ -138,8 +140,8 @@ const removeFromCart =(productId: string) => {
             type="number" 
             min="1" 
             defaultValue={1}
-            value={product.quantity} // Använd produktens kvantitet som input-värde
-            onChange={(event) => handleQuantityChange(product.id, event.target.value)} // Uppdatera kvantiteten när användaren ändrar input-värdet
+            value={product.quantity} 
+            onChange={(event) => handleQuantityChange(product.id, event.target.value)} 
         />
                 <button onClick={()=> removeFromCart(product.id)}>Ta bort</button>
                 </li>)
