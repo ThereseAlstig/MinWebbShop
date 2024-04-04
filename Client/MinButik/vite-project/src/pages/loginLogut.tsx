@@ -10,6 +10,7 @@ export const LoggInLoggUt = ({ updateUser }: MyLoggInProps)=>{
    
     const [user, setUser] = useState("");
     const [email, setEmail]= useState("");
+    const [name, setName]= useState("");
     const [password, setPassword]= useState("");
     const [registerDone, setRegisterDone]=useState(false)
     const [error, setError]= useState<string | null>(null)
@@ -40,6 +41,9 @@ export const LoggInLoggUt = ({ updateUser }: MyLoggInProps)=>{
      
   const handleEmailChange = (e) => {
      setEmail(e.target.value);
+ };
+  const handleNameChange = (e) => {
+     setName(e.target.value);
  };
  
  const handlePasswordChange = (e) => {
@@ -124,26 +128,42 @@ setError("Ettoväntat fel inträffade")
  console.log(registerDone)
  }else if(response.status=== 400){
  setError("Användaren finns redan")
- }else{ 
- throw new Error("Ett oväntat fel inträffade, var god försök igen senare.")
+ return;
  }
- }catch(error){
- console.error("Error during registration:", error);
- setError("Ett oväntat fel inträffade, var god försök igen senare.")
- }
+ 
+ const response2 = await fetch("http://localhost:3001/payments/createUser", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        email: email
+    })
+});
+const data2 = await response2.json();
+console.log("Create customer response:", data2);
+
+if (response2.status === 200) {
+   console.log(data2)
+} else {
+    
+    console.error("Failed to create customer:", data2);}
+}catch(error){
+console.error("Error:", error)
+setError("Ett oväntat fel inträffade")
  };
  
-
-
-
+ }
 
 return(
     <div className="LogIn">
 
-{!user ? (<><h2>Logga in</h2>
+{!user ? (<><h2>Logga in/registrera dig</h2>
 <form onSubmit={handleSubmit}>
-<input type="email" value ={email}onChange={handleEmailChange}/>
-<input type="password"value={password}onChange={handlePasswordChange} id="password" name="password" autoComplete="new-password"/>
+<input placeholder="Mejladress"type="email" value ={email}onChange={handleEmailChange}/>
+<input placeholder="Namn"type="text" value ={name}onChange={handleNameChange}/>
+<input placeholder="Lösenord"type="password"value={password}onChange={handlePasswordChange} id="password" name="password" autoComplete="new-password"/>
 <button type="submit">Logga in</button>
 <button onClick={CreateUser}>Skapa användare</button>
 </form>

@@ -1,15 +1,18 @@
 
 const initStripe =require("../stripe")
+const fs=require("fs")
 
 const createChecoutSession =async(req, res)=>{
    if (!Array.isArray(req.body)) {
       return res.status(400).json({ error: 'Invalid cart data' });
    }
    const cart = req.body
+   const user = req.body
    const stripe = initStripe()
    try{
    const session = await stripe.checkout.sessions.create({
       mode:"payment",
+      customer: user,
       line_items:cart.map(item=>{
          return{
             price: item.product,
@@ -26,6 +29,41 @@ const createChecoutSession =async(req, res)=>{
 }
 }
 
+const verifySession = async(req, res)=>{
+   const stripe = initStripe()
+   const sessionId = req.body.sessionId
+   const session = await stripe.checkout.session.retrieve(sessionId)
+
+   if(session.payment_state === "paid"){
+const lineItems =await stripe.checkout.session.listLineItems(sessionId)
+console.log(lineItems)
+      const order ={
+         orderNumber: matchMedia.floor(Math.random()*100000),
+         customerName: session.customer_details.name,
+         products: lineItems.data,
+         total: session.amount_total,
+         date:new Date()
+      }
+      const orders= JSON.parse(await fs.readFile("./data/orders.json"))
+      orders.push(order)
+      await fs.writeFile("./data/orders.json", JSON.stringify(orders, null, 4))
+   }
+   console.log(session)
+   res.status(200).json({verified: true})
+}
+
+const CreateCustomer=async (req, res)=>{
+   const stripe = initStripe()
+   const user = req.body
+ const customer = await stripe.customers.create  ({
+   name: user.name,
+   email: user.email,
+ });
+ res.status(200).json({customer})
+}
+
+
+
 const getProducts = async(req, res)=>{
    const stripe = initStripe()
 const products = await stripe.products.list({
@@ -34,6 +72,7 @@ const products = await stripe.products.list({
 })
 res.status(200).json({products})
 }
+
 
 const getPrice = async(req, res)=>{
    const stripe = initStripe()
@@ -44,5 +83,19 @@ const price = await stripe.prices.list({
 res.status(200).json({price})
 }
 
+const getUsersLoggedIn = async(req, res)=>{
+   
+   const stripe = initStripe()
+   const customers = await stripe.customers.search({
+     name: "ösdlkjflakjgla",
+      email: "therese.alstig@gmail.com",
+    
+    });
 
-module.exports= {createChecoutSession, getProducts, getPrice}
+   if(customers.data.length > 0 ){
+      const user = customers.data[0]
+      res.status(200).json({user})
+   }
+}
+
+module.exports= {createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}

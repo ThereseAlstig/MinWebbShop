@@ -3,3 +3,16 @@ POST http://localhost:3001/payments/create-checkout-session
 GET http://localhost:3001/payments/products
 ###
 GET http://localhost:3001/payments/price
+###
+GET http://localhost:3001/payments/priceAndProduct
+###
+GET http://localhost:3001/payments/UserLoggedIN
+
+###
+POST http://localhost:3001/payments/createUser
+Content-Type: application/json
+
+{
+    "user.name": "lkjlkjl",
+    "user.email": "Ansm@gmail.com"
+}
