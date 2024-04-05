@@ -13,6 +13,8 @@ POST http://localhost:3001/payments/createUser
 Content-Type: application/json
 
 {
-    "user.name": "lkjlkjl",
-    "user.email": "Ansm@gmail.com"
+    "name": "lkjlkjl",
+    "email": "Ansm@gmail.com",
+    "password": "kjhkjhkjhk"
+    
 }

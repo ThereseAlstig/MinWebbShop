@@ -1,6 +1,10 @@
 
 const initStripe =require("../stripe")
-const fs=require("fs")
+const fs=require("fs").promises
+const fetchUsers = require("../utils/fetchUsers")
+const bcrypt = require("bcrypt")
+const { PassThrough } = require("stream")
+
 
 const createChecoutSession =async(req, res)=>{
    if (!Array.isArray(req.body)) {
@@ -54,13 +58,38 @@ console.log(lineItems)
 
 const CreateCustomer=async (req, res)=>{
    const stripe = initStripe()
-   const user = req.body
- const customer = await stripe.customers.create  ({
-   name: user.name,
-   email: user.email,
+   const {email, password, name} = req.body
+
+   if(!password){
+      return res.status(400).json("Password is required")
+   }
+   const  customers = await fetchUsers()
+   console.log(customers)
+   const customerAllreadeExist= customers.find(c=> c.email===email)
+
+   if(customerAllreadeExist){
+      return res.status(400).json("User allrady exist")
+   }
+   const hashedPassword = await bcrypt.hash(password, 10);
+ const stripeCustomer = await stripe.customers.create  ({
+   
+   name,
+   email
+   
  });
- res.status(200).json({customer})
+ const newCustomer= {
+   id: stripeCustomer,
+   name,
+   email,
+   password: hashedPassword
+ }
+
+ customers.push(newCustomer)
+await fs.writeFile("./data/users.json", JSON.stringify(customers, null, 4))
+
+ res.status(200).json({customers: stripeCustomer})
 }
+
 
 
 
@@ -68,6 +97,7 @@ const getProducts = async(req, res)=>{
    const stripe = initStripe()
 const products = await stripe.products.list({
   limit: 4,
+ expand:["data.default_price"] 
 
 })
 res.status(200).json({products})

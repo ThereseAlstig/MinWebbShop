@@ -12,7 +12,7 @@ export const LoggInLoggUt = ({ updateUser }: MyLoggInProps)=>{
     const [email, setEmail]= useState("");
     const [name, setName]= useState("");
     const [password, setPassword]= useState("");
-    const [registerDone, setRegisterDone]=useState(false)
+    const [registred, setRegistred]= useState(false)
     const [error, setError]= useState<string | null>(null)
    
  useEffect(()=>{
@@ -108,46 +108,29 @@ setError("Ettoväntat fel inträffade")
      e.preventDefault();
  
  try{
- const response = await fetch("http://localhost:3001/api/auth/register",
- {
- method: "POST",
- credentials: "include",
- headers:{
-     "Content-Type": "application/json"
- }, 
+
  
- body: JSON.stringify({email: email, password: password})
- });
- 
- const data = await response.json()
- console.log(data)
- 
- if(response.ok){
- 
- setRegisterDone(true);
- console.log(registerDone)
- }else if(response.status=== 400){
- setError("Användaren finns redan")
- return;
- }
- 
- const response2 = await fetch("http://localhost:3001/payments/createUser", {
+ const response = await fetch("http://localhost:3001/payments/createUser", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
         name: name,
-        email: email
+        email: email,
+        password: password
     })
 });
-const data2 = await response2.json();
+const data2 = await response.json();
 console.log("Create customer response:", data2);
 
-if (response2.status === 200) {
+if (response.status === 200) {
    console.log(data2)
+   setRegistred(true)
+   console.log(registred)
+  
 } else {
-    
+   setRegistred(false)
     console.error("Failed to create customer:", data2);}
 }catch(error){
 console.error("Error:", error)
@@ -164,6 +147,8 @@ return(
 <input placeholder="Mejladress"type="email" value ={email}onChange={handleEmailChange}/>
 <input placeholder="Namn"type="text" value ={name}onChange={handleNameChange}/>
 <input placeholder="Lösenord"type="password"value={password}onChange={handlePasswordChange} id="password" name="password" autoComplete="new-password"/>
+
+{registred && <p>Du är registredad, dags att Logga in</p>}
 <button type="submit">Logga in</button>
 <button onClick={CreateUser}>Skapa användare</button>
 </form>

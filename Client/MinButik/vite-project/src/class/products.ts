@@ -4,9 +4,12 @@ constructor(
 public object: string,
 public name: string,
 public description: string,
-public default_price: string,
+public default_price: {
+    unit_amount: number
+},
 public images: string,
 public quantity: number,
+
 
 
 ){}

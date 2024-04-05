@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
 import { LoggInLoggUt } from "./loginLogut"
 import { Porducts } from "../class/products"
-import { Price } from "../class/price"
-
 export const Home =()=>{
 
     const [user, setUser]=useState("")
     const[products, setProducts]=useState<Porducts[]>([])
     const[cartItem, setCartItem]= useState<Porducts[]>([])
-    const[price, setPrice]= useState<Price[]>([])
+    
+   
     
     
     const updateUser = (newUser: string)=>{
@@ -35,25 +34,9 @@ export const Home =()=>{
       }, []);
 
 
-    useEffect(() => {
-        const fetchPrice = async () => {
-          try {
-            const response = await fetch("http://localhost:3001/payments/price");
-            if (!response.ok) {
-              throw new Error('Failed to fetch products');
-            }
-            const data = await response.json();
-            
-            setPrice(data);
-            console.log(data)
-            console.log(price)
-          } catch (error) {
-            console.error('Error fetching products:', error);
-          }
-        };
-    
-        fetchPrice();
-      }, []);
+
+
+   
 
 const HandlePayment=async()=>{
 
@@ -112,7 +95,7 @@ const removeFromCart =(productId: string) => {
             <li key={product.id}>
                 <h3>{product.name}</h3>
                 <img src={product.images} height="150px" alt={product.name} />    
-                <p>{product.default_price}</p>
+               <p>{product.default_price.unit_amount} kr</p>
                 <p>{product.description}</p>
                 <button onClick={()=> addToCart(product)}>Lägg i kundvagn</button>
             </li>
@@ -127,14 +110,14 @@ const removeFromCart =(productId: string) => {
 {!cartItem || cartItem.length === 0 && (
   <h2>Din Kundkorg är tom</h2>
 )}
+{!user &&(<p>Du måste vara inloggad för att genomföra köpet</p>)}
         {cartItem &&  cartItem.map(product=>(
             
             <li key={product.id}>
                 <h3>{product.name}</h3>
        
                 <img src={product.images} height="150px"alt={product.name} />
-               
-                <p>{product.default_price}</p>
+                <p>{product.default_price.unit_amount} kr</p>
                 <p>{product.description}</p>
                 <input 
             type="number" 
@@ -147,7 +130,7 @@ const removeFromCart =(productId: string) => {
                 </li>)
                )}
  </ul>
-             <button onClick={HandlePayment}>Genomför köp</button>
+            {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}
            </div></div>
         </div>
     
