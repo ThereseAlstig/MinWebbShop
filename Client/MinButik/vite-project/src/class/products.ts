@@ -5,7 +5,8 @@ public object: string,
 public name: string,
 public description: string,
 public default_price: {
-    unit_amount: number
+    unit_amount: number,
+    id: string
 },
 public images: string,
 public quantity: number,

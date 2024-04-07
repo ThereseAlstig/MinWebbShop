@@ -1,5 +1,5 @@
 import {   useState } from "react"
-import { LoggInLoggUt } from "./loginLogut"
+
 
 
 
@@ -8,9 +8,7 @@ import { LoggInLoggUt } from "./loginLogut"
 export const MyOrder =()=>{
 const [user, setUser]=useState("")
 
-const updateUser = (newUser: string)=>{
-    setUser(newUser)
-}
+
 
 
    
@@ -19,7 +17,7 @@ const updateUser = (newUser: string)=>{
 
     return(
         <>
-        <LoggInLoggUt updateUser={updateUser}/>
+     
         <h2>My orders</h2>
         {user ? (
 

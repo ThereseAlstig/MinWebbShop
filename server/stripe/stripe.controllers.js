@@ -3,23 +3,21 @@ const initStripe =require("../stripe")
 const fs=require("fs").promises
 const fetchUsers = require("../utils/fetchUsers")
 const bcrypt = require("bcrypt")
-const { PassThrough } = require("stream")
+
 
 
 const createChecoutSession =async(req, res)=>{
-   if (!Array.isArray(req.body)) {
-      return res.status(400).json({ error: 'Invalid cart data' });
-   }
-   const cart = req.body
-   const user = req.body
+  
+   const {cartItem, customerId} = req.body;
+ 
    const stripe = initStripe()
    try{
    const session = await stripe.checkout.sessions.create({
       mode:"payment",
-      customer: user,
-      line_items:cart.map(item=>{
+      customer: customerId,
+      line_items:cartItem.map(item=>{
          return{
-            price: item.product,
+            price: item.default_price.id,
             quantity: item.quantity
          }
       }),
@@ -36,18 +34,22 @@ const createChecoutSession =async(req, res)=>{
 const verifySession = async(req, res)=>{
    const stripe = initStripe()
    const sessionId = req.body.sessionId
+
+
    const session = await stripe.checkout.session.retrieve(sessionId)
 
-   if(session.payment_state === "paid"){
-const lineItems =await stripe.checkout.session.listLineItems(sessionId)
-console.log(lineItems)
-      const order ={
+   if(session.payment_stat === "paid"){
+   const lineItems = await stripe.checkout.session.listLineItems(sessionId)
+   console.log(lineItems)
+         const order ={
          orderNumber: matchMedia.floor(Math.random()*100000),
          customerName: session.customer_details.name,
+         customer: session.customer,
          products: lineItems.data,
          total: session.amount_total,
          date:new Date()
       }
+      
       const orders= JSON.parse(await fs.readFile("./data/orders.json"))
       orders.push(order)
       await fs.writeFile("./data/orders.json", JSON.stringify(orders, null, 4))
@@ -127,5 +129,6 @@ const getUsersLoggedIn = async(req, res)=>{
       res.status(200).json({user})
    }
 }
+
 
 module.exports= {createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}
