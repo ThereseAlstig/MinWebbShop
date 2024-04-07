@@ -64,5 +64,38 @@
         "name": "Therese",
         "email": "therese.alstig@gmail.com",
         "password": "$2b$10$nA02M0rMvltiYjrCJtRFde4aj.C0BT.iKK9l/xesFhodkZqGHwRVe"
+    },
+    {
+        "id": {
+            "id": "cus_PshHd6L9YWRv3o",
+            "object": "customer",
+            "address": null,
+            "balance": 0,
+            "created": 1712496972,
+            "currency": null,
+            "default_source": null,
+            "delinquent": false,
+            "description": null,
+            "discount": null,
+            "email": "thjekaivh@gmail.com",
+            "invoice_prefix": "889894CC",
+            "invoice_settings": {
+                "custom_fields": null,
+                "default_payment_method": null,
+                "footer": null,
+                "rendering_options": null
+            },
+            "livemode": false,
+            "metadata": {},
+            "name": "anna",
+            "phone": null,
+            "preferred_locales": [],
+            "shipping": null,
+            "tax_exempt": "none",
+            "test_clock": null
+        },
+        "name": "anna",
+        "email": "thjekaivh@gmail.com",
+        "password": "$2b$10$ioVf.eu/DQzFwXsaD9PbUeoNigz4qtwaoGWIFC53JTBKJa/dPJOsu"
     }
 ]

@@ -1,19 +1,177 @@
 import { useEffect, useState } from "react"
-import { LoggInLoggUt } from "./loginLogut"
+
 import { Porducts } from "../class/products"
 export const Home =()=>{
 
-    const [user, setUser]=useState("")
+   
     const[products, setProducts]=useState<Porducts[]>([])
     const[cartItem, setCartItem]= useState<Porducts[]>([])
-    
+      const [user, setUser] = useState("");
+      const [email, setEmail]= useState("");
+      const [name, setName]= useState("");
+      const [password, setPassword]= useState("");
+      const [registred, setRegistred]= useState(false)
+      const [error, setError]= useState<string | null>(null)
+      const [customerId, setCustomerId]= useState("")
+     
+   useEffect(()=>{
+      
+      try{
+       const authorize =async()=>{
+       const response = await fetch("http://localhost:3001/api/auth/authorised",{
+       credentials: "include"
+       })
+     
+     const data = await response.json()
+     if(response.status=== 200){
+      
+      setUser(data)
+      console.log(user, "användare")
+        console.log(data.email)
+        console.log(data.id.id, "rätt")
+        setCustomerId(data.id.id)
+      
+     }else{
+     
+    }}
+    authorize()
+    }catch(error){
+      console.error("Någonting misslyckades")
+    } }
+    , [])
    
+       
+    const handleEmailChange = (e) => {
+       setEmail(e.target.value);
+   };
+    const handleNameChange = (e) => {
+       setName(e.target.value);
+   };
+   
+   const handlePasswordChange = (e) => {
+       setPassword(e.target.value);
+   };
+   
+   const handleSubmit = async (e) => {
+       e.preventDefault();
+   
+   try{
+   const response = await fetch("http://localhost:3001/api/auth/login",
+   {
+   
+   method: "POST",
+   headers:{
+       "Content-Type": "application/json"
+   }, 
+   credentials: "include",
+   body: JSON.stringify({email: email, password: password})
+   })
+   const data = await response.json()
+   console.log(data)
+  
+   
+   if(response.status=== 200){
+   updateUser(data);
+   setUser(data)
+   
+   
+   
+   }else{
+   updateUser("")
+   setUser("")
+   setError("Fel vid inloggning")
+   }
+   }catch(error){
+      console.error("Fel vid inloggning:", error)
+  setError("Ettoväntat fel inträffade")
+  }}
+   
+   
+   
+   
+      const Logout =async ()=>{
+   
+           const response = await fetch('http://localhost:3001/api/auth/logout',{
+               method: "POST",
+               credentials: "include",
+       })
+       const data = await response.json()
+       if(response.status===200){   
+         setUser("")
+         updateUser("")
+         
+          
+          console.log("Loged out "+ data )
+       }else{
+           console.log("You are not loged out")
+       }
+      }
+   
+      const CreateUser = async (e) => {
+       e.preventDefault();
+   
+   try{
+  
+   
+   const response = await fetch("http://localhost:3001/payments/createUser", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password
+      })
+  });
+  const data2 = await response.json();
+  console.log("Create customer response:", data2);
+  
+  if (response.status === 200) {
+     console.log(data2)
+     setRegistred(true)
+     console.log(registred)
     
+  } else {
+     setRegistred(false)
+      console.error("Failed to create customer:", data2);}
+  }catch(error){
+  console.error("Error:", error)
+  setError("Ett oväntat fel inträffade")
+   };
+   
+   }
     
     const updateUser = (newUser: string)=>{
         setUser(newUser)
-        console.log(user)
+        
     }
+
+    useEffect(()=>{
+    
+      try{
+       const authorize =async()=>{
+       const response = await fetch("http://localhost:3001/api/auth/authorised",{
+       credentials: "include"
+       })
+     
+     const data = await response.json()
+     if(response.status=== 200){
+     
+      setUser(data)
+      console.log(user, "användare, hemsida")
+        console.log(data.email)
+        console.log(data, "rätt på hemsidan")
+      setCustomerId(data.id.id)
+      console.log(customerId)
+     }else{
+     
+    }}
+    authorize()
+    }catch(error){
+      console.error("Någonting misslyckades")
+    } }
+    , [])
     useEffect(() => {
         const fetchProducts = async () => {
           try {
@@ -24,7 +182,9 @@ export const Home =()=>{
             const data = await response.json();
             setProducts(data.products.data);
             console.log(data.products.data)
+          
             console.log(products)
+              console.log(user, "hemsidan")
           } catch (error) {
             console.error('Error fetching products:', error);
           }
@@ -40,50 +200,110 @@ export const Home =()=>{
 
 const HandlePayment=async()=>{
 
-  const requestBody = cartItem.map(item => ({
-   user: user,
-    product: item.default_price,
-    quantity: item.quantity 
-}));
-console.log(requestBody)
+
     const response= await fetch("http://localhost:3001/payments/create-checkout-session",{
     method: "POST",
     headers:{
       "Content-Type": "application/json"
     },
-body: JSON.stringify(requestBody)
+body: JSON.stringify({cartItem, customerId})
 })
 const data = await response.json()
-localStorage.setItem("sessionId",JSON.stringify(data.sessionId))
+localStorage.setItem("sessionId", JSON.stringify(data.sessionId))
 window.location=data.url
-    console.log(data)
+   
 }
+
+useEffect(()=>{
+  console.log(cartItem)
+  console.log(customerId)
+
+
+},[cartItem])
 const addToCart =(product:Porducts)=>{
-console.log(product)
+console.log(product, "product")
 
-setCartItem(
-   [...cartItem, product] )
-   console.log(cartItem)
 
+const index = cartItem.findIndex(item => item.id === product.id);
+  
+if (index !== -1) {
+
+  const updatedCart = [...cartItem];
+  updatedCart[index].quantity += 1;
+  setCartItem(updatedCart);
+  console.log(updatedCart, "appadte")
+  console.log(cartItem, "all carts")
+  
+} else {
+  const newItem : Porducts = {
+    id: product.id,
+    name: product.name,
+    default_price: {
+      unit_amount: product.default_price.unit_amount,
+      id: product.default_price.id,
+    },
+    images: product.images,
+    description: product.description,
+    quantity: 1,
+    object: product.object // Sätt antal till 1 när produkten läggs till för första gången
+};
+ 
+  setCartItem(prevCart => [...prevCart, newItem]);
+  console.log(newItem.quantity, "antal")
+ 
+  console.log(cartItem, "product")
+  console.log(newItem)
+}
 }
 const removeFromCart =(productId: string) => {
     setCartItem(cartItem.filter((item) => item.id !== productId));
   };
 
   const handleQuantityChange = (productId: string, newQuantity: string) => {
-    setCartItem(prevCartItems => prevCartItems.map(item => {
+    const quantityValue = parseInt(newQuantity, 10)
+    if(!isNaN(quantityValue)){
+      setCartItem(prevCartItems => prevCartItems.map(item => {
         if (item.id === productId) {
        
-            return { ...item, quantity: parseInt(newQuantity) }; // Uppdatera kvantiteten för den aktuella produkten
+            return { ...item, quantity: quantityValue};
+    
         }
         return item;
     }));
-};
+console.log(cartItem)
+    };
+  }
+    const handlePost =()=>{
 
-
+ const host= "api2.postnord.com"
+    const apikey ="accd0c5f4419c67a13931a6a9d63e7bf"
+fetch(`${host}/rest/businesslocation/v5/servicepoints/bypostalcode=90595/apikey=${apikey}&returnType=json&countryCode=SE&context=optionalservicepoint&responseFilter=public`)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    }
+  
+  
     return (
+
         <div className="HomePage">
-        <LoggInLoggUt updateUser={updateUser}/>
+      <div className="LogIn">
+
+{!user ? (<><h2>Logga in/registrera dig</h2>
+<form onSubmit={handleSubmit}>
+<input placeholder="Mejladress"type="email" value ={email}onChange={handleEmailChange}/>
+<input placeholder="Namn"type="text" value ={name}onChange={handleNameChange}/>
+<input placeholder="Lösenord"type="password"value={password}onChange={handlePasswordChange} id="password" name="password" autoComplete="new-password"/>
+
+{registred && <p>Du är registredad, dags att Logga in</p>}
+<button type="submit">Logga in</button>
+<button onClick={CreateUser}>Skapa användare</button>
+</form>
+{error && <p>{error}</p>}</>):(<>
+<button onClick={Logout}>Logga ut</button>
+    <h2>Du är inloggad</h2>
+    </>)}
+</div>
         
             <div className="MainOCart">
                 <div className="MainHome">
@@ -122,7 +342,7 @@ const removeFromCart =(productId: string) => {
                 <input 
             type="number" 
             min="1" 
-            defaultValue={1}
+            
             value={product.quantity} 
             onChange={(event) => handleQuantityChange(product.id, event.target.value)} 
         />
@@ -131,8 +351,10 @@ const removeFromCart =(productId: string) => {
                )}
  </ul>
             {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}
+            <button onClick={handlePost}>Hitta utlämningsställe</button>
            </div></div>
         </div>
     
     )
 }
+
