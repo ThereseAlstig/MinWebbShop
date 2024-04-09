@@ -45,11 +45,11 @@ const verifySession = async(req, res)=>{
 
    const session = await stripe.checkout.sessions.retrieve(sessionId)
 
-   if(session.payment_stat === "paid"){
+   if(session.payment_status === "paid"){
    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId)
-   console.log(lineItems)
+
          const order ={
-         orderNumber: matchMedia.floor(Math.random()*100000),
+         orderNumber: Math.floor(Math.random()*100000),
          customerName: session.customer_details.name,
          customer: session.customer,
          products: lineItems.data,
@@ -97,6 +97,7 @@ const CreateCustomer=async (req, res)=>{
 await fs.writeFile("./data/users.json", JSON.stringify(customers, null, 4))
 
  res.status(200).json({customers: stripeCustomer})
+ console.log('./data/orders.json')
 }
 
 
@@ -137,5 +138,24 @@ const getUsersLoggedIn = async(req, res)=>{
    }
 }
 
+const getOrders = async (req, res)=>{
+   const {id} = req.body
+   try{
+ const orders= JSON.parse(await fs.readFile("./data/orders.json"))
+   const userOrders = orders.find(order => order.customer === id)
+   if(userOrders.length> 0){
+      res.status(200).json(userOrders)
+   }else{
+      res.status(404).json({message: "User does not exist in orders"})
+   }
+   }catch(error){
+      console.error("Error retrieving orders:", error)
+      res.status(500).json({ message: "Error retrieving orders." });
+   }
+  
+   }
 
-module.exports= {retrieveCupon, createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}
+
+
+
+module.exports= {getOrders, retrieveCupon, createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}

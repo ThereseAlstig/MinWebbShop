@@ -1,4 +1,4 @@
-import {   useState } from "react"
+import {   useEffect, useState } from "react"
 
 
 
@@ -6,7 +6,24 @@ import {   useState } from "react"
 
 
 export const MyOrder =()=>{
-const [user, setUser]=useState("")
+const [user, setUser]=useState<string | null>(null)
+
+
+
+
+useEffect(()=>{
+
+    const customerIdFromStorage = localStorage.getItem('customerId');
+    
+
+    if (customerIdFromStorage !== null) {
+        // Sätt customerId från local storage till state
+        setUser(customerIdFromStorage);
+       
+    console.log(customerIdFromStorage)
+    }
+}, [])
+
 
 
 
