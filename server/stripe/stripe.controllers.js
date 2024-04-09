@@ -13,14 +13,17 @@ const createChecoutSession =async(req, res)=>{
    const stripe = initStripe()
    try{
    const session = await stripe.checkout.sessions.create({
+      
       mode:"payment",
       customer: customerId,
       line_items:cartItem.map(item=>{
          return{
             price: item.default_price.id,
-            quantity: item.quantity
+            quantity: item.quantity,
+            
          }
       }),
+   allow_promotion_codes: true,
       success_url:"http://localhost:5173/ConfirmOrder",
       cancel_url:"http://localhost:5173/Home"
    })
@@ -30,16 +33,20 @@ const createChecoutSession =async(req, res)=>{
    res.status(500).json({error: 'Failed to create checkout session'})
 }
 }
+const retrieveCupon=async(reg, res)=>{
+const coupon = await stripe.coupons.retrieve('promo_1P2vxOJHp8hcttsG6vqrTFYU');
+}
+
 
 const verifySession = async(req, res)=>{
    const stripe = initStripe()
    const sessionId = req.body.sessionId
 
 
-   const session = await stripe.checkout.session.retrieve(sessionId)
+   const session = await stripe.checkout.sessions.retrieve(sessionId)
 
    if(session.payment_stat === "paid"){
-   const lineItems = await stripe.checkout.session.listLineItems(sessionId)
+   const lineItems = await stripe.checkout.sessions.listLineItems(sessionId)
    console.log(lineItems)
          const order ={
          orderNumber: matchMedia.floor(Math.random()*100000),
@@ -131,4 +138,4 @@ const getUsersLoggedIn = async(req, res)=>{
 }
 
 
-module.exports= {createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}
+module.exports= {retrieveCupon, createChecoutSession, getProducts, getPrice, getUsersLoggedIn, verifySession, CreateCustomer}

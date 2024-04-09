@@ -13,7 +13,9 @@ export const Home =()=>{
       const [registred, setRegistred]= useState(false)
       const [error, setError]= useState<string | null>(null)
       const [customerId, setCustomerId]= useState("")
-     
+      const [postalCode, setPostalCode]= useState("")
+      const[ postPickup, setPostPickup] = useState([])
+     //servicePoints.nameservicePoint.visitingAddress
    useEffect(()=>{
       
       try{
@@ -245,7 +247,7 @@ if (index !== -1) {
     images: product.images,
     description: product.description,
     quantity: 1,
-    object: product.object // Sätt antal till 1 när produkten läggs till för första gången
+    object: product.object 
 };
  
   setCartItem(prevCart => [...prevCart, newItem]);
@@ -273,15 +275,38 @@ const removeFromCart =(productId: string) => {
 console.log(cartItem)
     };
   }
-    const handlePost =()=>{
 
- const host= "api2.postnord.com"
-    const apikey ="accd0c5f4419c67a13931a6a9d63e7bf"
-fetch(`${host}/rest/businesslocation/v5/servicepoints/bypostalcode=90595/apikey=${apikey}&returnType=json&countryCode=SE&context=optionalservicepoint&responseFilter=public`)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-    }
+  const handlePostCode=(e)=>{
+    setPostalCode(e.target.value)
+    console.log(postalCode)
+  
+  }
+
+
+  const handlePost = async () => {
+    const response = await fetch(`https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=${postalCode}&context=optionalservicepoint&&numberOfServicePoints=10&responseFilter=public&typeId=25&callback=jsonp`);
+    const jsonResponse = await response.text();
+
+  
+    const jsonString = jsonResponse.replace(/^jsonp\(/, '').replace(/\)$/, '');
+
+    const data = JSON.parse(jsonString);
+console.log(data)
+  
+    const stores: {name:string, address:string}[] = [];
+    let storeCount = 0;
+  
+    data.servicePointInformationResponse.servicePoints.forEach(servicePoint => {
+        const name = servicePoint.name;
+        const address = `${servicePoint.visitingAddress.streetName} ${servicePoint.visitingAddress.streetNumber}, ${servicePoint.visitingAddress.postalCode} ${servicePoint.visitingAddress.city}`;
+        
+      
+        stores.push({ name, address });
+        storeCount++;
+    });
+
+    console.log(stores);
+}
   
   
     return (
@@ -350,11 +375,13 @@ fetch(`${host}/rest/businesslocation/v5/servicepoints/bypostalcode=90595/apikey=
                 </li>)
                )}
  </ul>
-            {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}
+            
             <button onClick={handlePost}>Hitta utlämningsställe</button>
-           </div></div>
+            <input type="text" value={postalCode} onChange={handlePostCode} placeholder="postnummer"/>
+           {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
         </div>
     
     )
 }
 
+//https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=90595&context=optionalservicepoint&responseFilter=public&typeId=25&callback=jsonp
