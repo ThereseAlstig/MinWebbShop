@@ -14,8 +14,8 @@ export const Home =()=>{
       const [error, setError]= useState<string | null>(null)
       const [customerId, setCustomerId]= useState("")
       const [postalCode, setPostalCode]= useState("")
-      const[ postPickup, setPostPickup] = useState([])
-     //servicePoints.nameservicePoint.visitingAddress
+      const [stores, setStores] = useState([]);
+     
    useEffect(()=>{
       
       try{
@@ -75,8 +75,11 @@ export const Home =()=>{
    if(response.status=== 200){
    updateUser(data);
    setUser(data)
-   
-   
+   setCustomerId(data.id.id)
+   console.log(customerId)
+ 
+    localStorage.setItem('customerId', customerId);
+
    
    }else{
    updateUser("")
@@ -101,7 +104,7 @@ export const Home =()=>{
        if(response.status===200){   
          setUser("")
          updateUser("")
-         
+         localStorage.removeItem('customerId');
           
           console.log("Loged out "+ data )
        }else{
@@ -293,19 +296,12 @@ console.log(cartItem)
     const data = JSON.parse(jsonString);
 console.log(data)
   
-    const stores: {name:string, address:string}[] = [];
-    let storeCount = 0;
-  
-    data.servicePointInformationResponse.servicePoints.forEach(servicePoint => {
-        const name = servicePoint.name;
-        const address = `${servicePoint.visitingAddress.streetName} ${servicePoint.visitingAddress.streetNumber}, ${servicePoint.visitingAddress.postalCode} ${servicePoint.visitingAddress.city}`;
-        
-      
-        stores.push({ name, address });
-        storeCount++;
-    });
+   
+   
 
-    console.log(stores);
+    console.log(data.servicePointInformationResponse.servicePoints);
+    setStores(data.servicePointInformationResponse.servicePoints)
+    console.log(stores, "butiker")
 }
   
   
@@ -377,7 +373,23 @@ console.log(data)
  </ul>
             
             <button onClick={handlePost}>Hitta utlämningsställe</button>
+
+       
             <input type="text" value={postalCode} onChange={handlePostCode} placeholder="postnummer"/>
+
+<ul>
+{stores && stores.map(store=> (
+  <li key={store.name}>
+
+<p>{store.name}</p>
+<p>{store.deliveryAddress.streetName} {store.deliveryAddress.streetNumber}</p><p></p>
+<p>{store.deliveryAddress.city}</p>
+<input type="checkbox"/>
+
+</li>)
+)}
+
+</ul>
            {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
         </div>
     

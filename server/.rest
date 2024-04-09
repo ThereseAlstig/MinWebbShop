@@ -9,7 +9,11 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/payments/products
+GET http://localhost:3001/payments/products/userOrders
+Content-Type: application/json
+{
+    "id": "cus_Prvpi83yHuMQVk"
+}
 ###
 GET http://localhost:3001/payments/price
 ###
