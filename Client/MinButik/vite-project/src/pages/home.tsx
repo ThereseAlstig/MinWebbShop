@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 
 import { Porducts } from "../class/products"
+import { NULL } from "sass"
+import { Stores } from "../class/store"
 export const Home =()=>{
 
    
@@ -14,7 +16,8 @@ export const Home =()=>{
       const [error, setError]= useState<string | null>(null)
       const [customerId, setCustomerId]= useState("")
       const [postalCode, setPostalCode]= useState("")
-      const [stores, setStores] = useState([]);
+      const [stores, setStores] = useState<Stores | null>(null);
+      const[selectedStore, setSelectedStore]= useState(null)
      
    useEffect(()=>{
       
@@ -285,9 +288,10 @@ console.log(cartItem)
   
   }
 
-
+const APIKey = import.meta.env.VITE_MY_API_KEY_POST
   const handlePost = async () => {
-    const response = await fetch(`https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=${postalCode}&context=optionalservicepoint&&numberOfServicePoints=10&responseFilter=public&typeId=25&callback=jsonp`);
+    
+    const response = await fetch(`https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=${APIKey}&returnType=json&countryCode=SE&postalCode=${postalCode}&context=optionalservicepoint&&numberOfServicePoints=5&responseFilter=public&typeId&callback=jsonp`);
     const jsonResponse = await response.text();
 
   
@@ -378,22 +382,22 @@ console.log(data)
             <input type="text" value={postalCode} onChange={handlePostCode} placeholder="postnummer"/>
 
 <ul>
-{stores && stores.map(store=> (
+{stores && stores.map((store: Stores) => (
   <li key={store.name}>
 
 <p>{store.name}</p>
 <p>{store.deliveryAddress.streetName} {store.deliveryAddress.streetNumber}</p><p></p>
 <p>{store.deliveryAddress.city}</p>
-<input type="checkbox"/>
+<input type="checkbox" onChange={()=> setSelectedStore(store)}checked={selectedStore===store}/>
 
 </li>)
 )}
 
 </ul>
-           {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
+           {selectedStore && user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
         </div>
     
     )
 }
 
-//https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=90595&context=optionalservicepoint&responseFilter=public&typeId=25&callback=jsonp
+
