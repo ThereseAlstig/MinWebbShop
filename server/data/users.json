@@ -97,5 +97,71 @@
         "name": "anna",
         "email": "thjekaivh@gmail.com",
         "password": "$2b$10$ioVf.eu/DQzFwXsaD9PbUeoNigz4qtwaoGWIFC53JTBKJa/dPJOsu"
+    },
+    {
+        "id": {
+            "id": "cus_PtraqagjJ7m5Ab",
+            "object": "customer",
+            "address": null,
+            "balance": 0,
+            "created": 1712765957,
+            "currency": null,
+            "default_source": null,
+            "delinquent": false,
+            "description": null,
+            "discount": null,
+            "email": "patrik@gmail.com",
+            "invoice_prefix": "FA82C23A",
+            "invoice_settings": {
+                "custom_fields": null,
+                "default_payment_method": null,
+                "footer": null,
+                "rendering_options": null
+            },
+            "livemode": false,
+            "metadata": {},
+            "name": "Patrik",
+            "phone": null,
+            "preferred_locales": [],
+            "shipping": null,
+            "tax_exempt": "none",
+            "test_clock": null
+        },
+        "name": "Patrik",
+        "email": "patrik@gmail.com",
+        "password": "$2b$10$xkAh9rs9YJ1y04tD/p1WC.aSUXTQpCwiJg/O6KDRYFxMe39sJmCKG"
+    },
+    {
+        "id": {
+            "id": "cus_PtrccnrmOyI7QN",
+            "object": "customer",
+            "address": null,
+            "balance": 0,
+            "created": 1712766071,
+            "currency": null,
+            "default_source": null,
+            "delinquent": false,
+            "description": null,
+            "discount": null,
+            "email": "anna@gmail.com",
+            "invoice_prefix": "FF308A49",
+            "invoice_settings": {
+                "custom_fields": null,
+                "default_payment_method": null,
+                "footer": null,
+                "rendering_options": null
+            },
+            "livemode": false,
+            "metadata": {},
+            "name": "Anna",
+            "phone": null,
+            "preferred_locales": [],
+            "shipping": null,
+            "tax_exempt": "none",
+            "test_clock": null
+        },
+        "name": "Anna",
+        "email": "anna@gmail.com",
+        "password": "$2b$10$qi8pdhpHUlQZKczUkpad6uEi471sxkJy9e7YpUeEScIaIN9QJJYaW"
     }
 ]

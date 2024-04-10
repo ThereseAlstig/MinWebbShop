@@ -12,16 +12,16 @@ const {email, password} = req.body
     //Kolla så användaren inte finns 
 const users = await fetchUsers()
 const userExists = users.find(u=> u.email=== email)
-//Kolla så lösenordet stämmer och användaren finns
+
 
 if(!userExists|| !await bcrypt.compare(password, userExists.password)){
 return res.status(400).json("Wrong user eller password")
 
 }
-//Logga in användaren starta/skapa en session
-req.session.user = userExists // nu görs att paketet sägger cookies och sparar infomrationen
 
-//Skicka tillbaka ett svar
+req.session.user = userExists 
+
+
 
 res.status(200).json(userExists)
 }
