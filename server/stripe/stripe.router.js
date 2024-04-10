@@ -10,6 +10,6 @@ router.get("/price", getPrice)
 router.post("/verify", verifySession)
 router.post("/createUser", CreateCustomer)
 router.get("/UserLoggedIN", getUsersLoggedIn)
-router.get("/userOrders", getOrders)
+router.get("/userOrders/:id", getOrders)
 
 module.exports= router

@@ -138,15 +138,22 @@ const getUsersLoggedIn = async(req, res)=>{
    }
 }
 
-const getOrders = async (req, res)=>{
-   const {id} = req.body
+const getOrders = async (req, res)=> {
+   console.log("start")
+   const id = req.params.id
    try{
- const orders= JSON.parse(await fs.readFile("./data/orders.json"))
-   const userOrders = orders.find(order => order.customer === id)
-   if(userOrders.length> 0){
-      res.status(200).json(userOrders)
-   }else{
-      res.status(404).json({message: "User does not exist in orders"})
+ const orderData= await fs.readFile("./data/orders.json")
+ const orders = JSON.parse(orderData);
+ console.log(orders)
+   const orderUser = orders.filter(order => order.customer === id)
+   console.log(orderUser)
+   if(!orderUser|| orderUser.length ===0){
+      return res
+      .status(404)
+      .json({ error: "Använadre hade inga tidigare beställningar" });
+  }else{
+
+   res.status(200).json(orderUser);
    }
    }catch(error){
       console.error("Error retrieving orders:", error)
