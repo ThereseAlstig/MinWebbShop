@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-
 import { Porducts } from "../class/products"
-import { NULL } from "sass"
 import { Stores } from "../class/store"
+
 export const Home =()=>{
 
    
@@ -16,8 +15,8 @@ export const Home =()=>{
       const [error, setError]= useState<string | null>(null)
       const [customerId, setCustomerId]= useState("")
       const [postalCode, setPostalCode]= useState("")
-      const [stores, setStores] = useState<Stores | null>(null);
-      const[selectedStore, setSelectedStore]= useState(null)
+      const [stores, setStores] = useState<Stores[] | null>(null);
+      const[selectedStore, setSelectedStore]= useState<Stores | null>(null)
      
    useEffect(()=>{
       
@@ -35,6 +34,8 @@ export const Home =()=>{
         console.log(data.email)
         console.log(data.id.id, "rätt")
         setCustomerId(data.id.id)
+        console.log(customerId)
+        localStorage.setItem('customerId', customerId);
       
      }else{
      
@@ -46,18 +47,18 @@ export const Home =()=>{
     , [])
    
        
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: any) => {
        setEmail(e.target.value);
    };
-    const handleNameChange = (e) => {
+    const handleNameChange = (e: any) => {
        setName(e.target.value);
    };
    
-   const handlePasswordChange = (e) => {
+   const handlePasswordChange = (e: any) => {
        setPassword(e.target.value);
    };
    
-   const handleSubmit = async (e) => {
+   const handleSubmit = async (e: any) => {
        e.preventDefault();
    
    try{
@@ -115,7 +116,7 @@ export const Home =()=>{
        }
       }
    
-      const CreateUser = async (e) => {
+      const CreateUser = async (e: any) => {
        e.preventDefault();
    
    try{
@@ -139,6 +140,7 @@ export const Home =()=>{
      console.log(data2)
      setRegistred(true)
      console.log(registred)
+
     
   } else {
      setRegistred(false)
@@ -168,10 +170,11 @@ export const Home =()=>{
      
       setUser(data)
       console.log(user, "användare, hemsida")
-        console.log(data.email)
-        console.log(data, "rätt på hemsidan")
-      setCustomerId(data.id.id)
-      console.log(customerId)
+        console.log(data)
+        console.log(data.id.id, "rätt på hemsidan")
+     
+      console.log(customerId, "customerID")
+      localStorage.setItem('customerId', data.id.id);
      }else{
      
     }}
@@ -282,7 +285,7 @@ console.log(cartItem)
     };
   }
 
-  const handlePostCode=(e)=>{
+  const handlePostCode=(e: any)=>{
     setPostalCode(e.target.value)
     console.log(postalCode)
   
@@ -301,7 +304,7 @@ const APIKey = import.meta.env.VITE_MY_API_KEY_POST
 console.log(data)
   
    
-   
+   console.log(data, "data")
 
     console.log(data.servicePointInformationResponse.servicePoints);
     setStores(data.servicePointInformationResponse.servicePoints)

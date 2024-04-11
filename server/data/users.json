@@ -163,5 +163,38 @@
         "name": "Anna",
         "email": "anna@gmail.com",
         "password": "$2b$10$qi8pdhpHUlQZKczUkpad6uEi471sxkJy9e7YpUeEScIaIN9QJJYaW"
+    },
+    {
+        "id": {
+            "id": "cus_PuAkUOnvjqBMTH",
+            "object": "customer",
+            "address": null,
+            "balance": 0,
+            "created": 1712837218,
+            "currency": null,
+            "default_source": null,
+            "delinquent": false,
+            "description": null,
+            "discount": null,
+            "email": "trulle@gmail.com",
+            "invoice_prefix": "2D35B0A2",
+            "invoice_settings": {
+                "custom_fields": null,
+                "default_payment_method": null,
+                "footer": null,
+                "rendering_options": null
+            },
+            "livemode": false,
+            "metadata": {},
+            "name": "Trulle",
+            "phone": null,
+            "preferred_locales": [],
+            "shipping": null,
+            "tax_exempt": "none",
+            "test_clock": null
+        },
+        "name": "Trulle",
+        "email": "trulle@gmail.com",
+        "password": "$2b$10$ehqVyn4otVYu.zBKtCkeGeXJnqn9TCVao4R2vkhXmMneurnsfESky"
     }
 ]

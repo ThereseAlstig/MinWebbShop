@@ -31,6 +31,7 @@ export const ConfirmOrder=()=>{
                     if (response.ok) {
                         setVerified(data.verified)
                         setIsLoading(false)
+                     
                     }
                 }
     
