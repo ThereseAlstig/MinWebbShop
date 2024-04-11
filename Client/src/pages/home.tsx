@@ -184,6 +184,8 @@ export const Home =()=>{
       console.error("Någonting misslyckades")
     } }
     , [])
+
+    
     useEffect(() => {
 
       
