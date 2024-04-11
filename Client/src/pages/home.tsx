@@ -178,12 +178,17 @@ export const Home =()=>{
       localStorage.setItem('customerId', data.id.id);
      }else{
      
+      setUser("")
+      localStorage.removeItem('customerId');
+
     }}
     authorize()
     }catch(error){
       console.error("Någonting misslyckades")
     } }
     , [])
+
+
     useEffect(() => {
 
       
