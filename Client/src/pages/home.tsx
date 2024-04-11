@@ -178,6 +178,9 @@ export const Home =()=>{
       localStorage.setItem('customerId', data.id.id);
      }else{
      
+      setUser("")
+      localStorage.removeItem('customerId');
+
     }}
     authorize()
     }catch(error){
@@ -185,7 +188,7 @@ export const Home =()=>{
     } }
     , [])
 
-    
+
     useEffect(() => {
 
       
