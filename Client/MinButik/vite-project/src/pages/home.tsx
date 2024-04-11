@@ -34,8 +34,8 @@ export const Home =()=>{
         console.log(data.email)
         console.log(data.id.id, "rätt")
         setCustomerId(data.id.id)
-        console.log(customerId)
-        localStorage.setItem('customerId', customerId);
+      
+        localStorage.setItem('customerId', data.id.id);
       
      }else{
      
@@ -80,15 +80,16 @@ export const Home =()=>{
    updateUser(data);
    setUser(data)
    setCustomerId(data.id.id)
-   console.log(customerId)
+   console.log(customerId, "id")
  
-    localStorage.setItem('customerId', customerId);
+    localStorage.setItem('customerId', data.id.id);
 
    
    }else{
    updateUser("")
    setUser("")
    setError("Fel vid inloggning")
+   localStorage.removeItem('customerId');
    }
    }catch(error){
       console.error("Fel vid inloggning:", error)
@@ -172,7 +173,7 @@ export const Home =()=>{
       console.log(user, "användare, hemsida")
         console.log(data)
         console.log(data.id.id, "rätt på hemsidan")
-     
+     setCustomerId(data.id.id)
       console.log(customerId, "customerID")
       localStorage.setItem('customerId', data.id.id);
      }else{
