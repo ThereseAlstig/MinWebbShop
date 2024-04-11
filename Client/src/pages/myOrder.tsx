@@ -20,7 +20,7 @@ useEffect(()=>{
     
 
     if (customerIdFromStorage !== null) {
-        // Sätt customerId från local storage till state
+     
         setUser(customerIdFromStorage);
        
     console.log(customerIdFromStorage)

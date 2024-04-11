@@ -185,7 +185,10 @@ export const Home =()=>{
     } }
     , [])
     useEffect(() => {
+
+      
         const fetchProducts = async () => {
+        
           try {
             const response = await fetch("http://localhost:3001/payments/products");
             if (!response.ok) {
@@ -199,9 +202,9 @@ export const Home =()=>{
               console.log(user, "hemsidan")
           } catch (error) {
             console.error('Error fetching products:', error);
-          }
+          
         };
-    
+      }
         fetchProducts();
       }, []);
 
