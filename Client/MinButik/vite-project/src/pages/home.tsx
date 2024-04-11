@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-
 import { Porducts } from "../class/products"
+import { Stores } from "../class/store"
+
 export const Home =()=>{
 
    
@@ -14,7 +15,8 @@ export const Home =()=>{
       const [error, setError]= useState<string | null>(null)
       const [customerId, setCustomerId]= useState("")
       const [postalCode, setPostalCode]= useState("")
-      const [stores, setStores] = useState([]);
+      const [stores, setStores] = useState<Stores[] | null>(null);
+      const[selectedStore, setSelectedStore]= useState<Stores | null>(null)
      
    useEffect(()=>{
       
@@ -33,6 +35,8 @@ export const Home =()=>{
         console.log(data.id.id, "rätt")
         setCustomerId(data.id.id)
       
+        localStorage.setItem('customerId', data.id.id);
+      
      }else{
      
     }}
@@ -43,18 +47,18 @@ export const Home =()=>{
     , [])
    
        
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: any) => {
        setEmail(e.target.value);
    };
-    const handleNameChange = (e) => {
+    const handleNameChange = (e: any) => {
        setName(e.target.value);
    };
    
-   const handlePasswordChange = (e) => {
+   const handlePasswordChange = (e: any) => {
        setPassword(e.target.value);
    };
    
-   const handleSubmit = async (e) => {
+   const handleSubmit = async (e: any) => {
        e.preventDefault();
    
    try{
@@ -76,15 +80,16 @@ export const Home =()=>{
    updateUser(data);
    setUser(data)
    setCustomerId(data.id.id)
-   console.log(customerId)
+   console.log(customerId, "id")
  
-    localStorage.setItem('customerId', customerId);
+    localStorage.setItem('customerId', data.id.id);
 
    
    }else{
    updateUser("")
    setUser("")
    setError("Fel vid inloggning")
+   localStorage.removeItem('customerId');
    }
    }catch(error){
       console.error("Fel vid inloggning:", error)
@@ -112,7 +117,7 @@ export const Home =()=>{
        }
       }
    
-      const CreateUser = async (e) => {
+      const CreateUser = async (e: any) => {
        e.preventDefault();
    
    try{
@@ -136,6 +141,7 @@ export const Home =()=>{
      console.log(data2)
      setRegistred(true)
      console.log(registred)
+
     
   } else {
      setRegistred(false)
@@ -165,10 +171,11 @@ export const Home =()=>{
      
       setUser(data)
       console.log(user, "användare, hemsida")
-        console.log(data.email)
-        console.log(data, "rätt på hemsidan")
-      setCustomerId(data.id.id)
-      console.log(customerId)
+        console.log(data)
+        console.log(data.id.id, "rätt på hemsidan")
+     setCustomerId(data.id.id)
+      console.log(customerId, "customerID")
+      localStorage.setItem('customerId', data.id.id);
      }else{
      
     }}
@@ -279,15 +286,16 @@ console.log(cartItem)
     };
   }
 
-  const handlePostCode=(e)=>{
+  const handlePostCode=(e: any)=>{
     setPostalCode(e.target.value)
     console.log(postalCode)
   
   }
 
-
+const APIKey = import.meta.env.VITE_MY_API_KEY_POST
   const handlePost = async () => {
-    const response = await fetch(`https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=${postalCode}&context=optionalservicepoint&&numberOfServicePoints=10&responseFilter=public&typeId=25&callback=jsonp`);
+    
+    const response = await fetch(`https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=${APIKey}&returnType=json&countryCode=SE&postalCode=${postalCode}&context=optionalservicepoint&&numberOfServicePoints=5&responseFilter=public&typeId&callback=jsonp`);
     const jsonResponse = await response.text();
 
   
@@ -297,7 +305,7 @@ console.log(cartItem)
 console.log(data)
   
    
-   
+   console.log(data, "data")
 
     console.log(data.servicePointInformationResponse.servicePoints);
     setStores(data.servicePointInformationResponse.servicePoints)
@@ -378,22 +386,22 @@ console.log(data)
             <input type="text" value={postalCode} onChange={handlePostCode} placeholder="postnummer"/>
 
 <ul>
-{stores && stores.map(store=> (
+{stores && stores.map((store: Stores) => (
   <li key={store.name}>
 
 <p>{store.name}</p>
 <p>{store.deliveryAddress.streetName} {store.deliveryAddress.streetNumber}</p><p></p>
 <p>{store.deliveryAddress.city}</p>
-<input type="checkbox"/>
+<input type="checkbox" onChange={()=> setSelectedStore(store)}checked={selectedStore===store}/>
 
 </li>)
 )}
 
 </ul>
-           {user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
+           {selectedStore && user&&( <button onClick={HandlePayment}>Genomför köp</button>)}</div></div>
         </div>
     
     )
 }
 
-//https://atapi2.postnord.com/rest/businesslocation/v5/servicepoints/bypostalcode?apikey=3054ecc338af73202a46f8651e550c92&returnType=json&countryCode=SE&postalCode=90595&context=optionalservicepoint&responseFilter=public&typeId=25&callback=jsonp
+
