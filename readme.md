@@ -1,19 +1,17 @@
 MINWEBBSHOP -huvudmapp
 CLIENT- fronendprojekt 
-Undermappar:
+
+(KÖR - npm i i client mappen)
+
+För att köra igång kör 
+client-mappennpm create vite 
+servermappen 
+npm init --y
+npm run express
 
 
-
-
-MinButik
-vite-project
-
-
-
-npm create vite npm cd webbShopSida npm run dev - resulterade i fle mappar än tänkt
-
-Att installera:
-1. npm install axios, react-router-dom, sass
+Att installera i client mappen:
+1. npm install axios, react-router-dom, sass(bytte css mot sass)
 
 I mapp -crs-pages
 Hittar vi sidor för
@@ -29,7 +27,7 @@ sen kommer man om vidare till confirm order där man antingen får en bekräftel
 Backend
 server inloggning
 
-Skapa en servermapp npm initi --y
+
 
 2. npm install npm install express, cors, cookie-session, npm init bcrypt
 npm install stripe, dotenv, nodemon (om man inte har globalt)
@@ -46,4 +44,8 @@ stripe.router - alla touters kopplade till dessa functioner
 
 
 
+
+Uppgift-
+Har samtliga delar som behövs för VG delen, hämtar api från postnord, man behöver klicka i tutan för att kunna betala och på metalsudan kan man lägga in MC24 och få 10000kr rabatt. 
+Man kan som inloggad hämta och se sina beställningar och man kan inte spara order förrän det är verifierat att ordern är betad. 
 
